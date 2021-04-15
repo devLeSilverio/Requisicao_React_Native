@@ -1,14 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import { SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
+import Api from './components/Api';
+import Filme from './components/Filme'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state ={
+      filme:[]
+    }
+  }
+
+  async componentDidMount(){
+    const response = await Api.get('?t=Matilda+&apikey=6be180fe');
+    this.setState({
+      filme: response.data
+    })
+  }
+
+  render(){
+    return (
+      <View style={styles.container}>
+        <Filme data={this.state.filme}/>
+      </View>
+    );
+  } 
 }
 
 const styles = StyleSheet.create({
@@ -19,3 +36,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App
